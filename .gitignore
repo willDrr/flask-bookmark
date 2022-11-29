@@ -1,0 +1,9 @@
+Bookmarks
+*.env
+./env
+*.sqlite
+venv/
+.git
+__pycache__
+data-dev.sqlite
+notes.md

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+	{% for bookmark in file_data %}
+	<div style="border: bold 1px;">
+		<h3>Directory</h3>
+		<div>{{bookmark.name}}</div>
+		<div>{{bookmark.url}}</div>
+		<div>{{bookmark.content}}</div>
+		<div>{{bookmark.have_direct_directories}}</div>
+		<div>{{bookmark.have_direct_links}}</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}
