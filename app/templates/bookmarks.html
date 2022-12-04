@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div>
-	{% for bookmark in file_data %}
-	<div style="border: bold 1px;">
-		<h3>Directory</h3>
-		<div>{{bookmark.name}}</div>
-		<div>{{bookmark.url}}</div>
-		<div>{{bookmark.content}}</div>
-		<div>{{bookmark.have_direct_directories}}</div>
-		<div>{{bookmark.have_direct_links}}</div>
-	</div>
-	{% endfor %}
+
+<div class="content">
+ <!-- https://getbootstrap.com/docs/5.0/components/card/ --> 
+ {% for bookmark in bookmarks %}
+ <div class="card bg-dark text-white" style="padding: 5px; margin: 5px;">
+ 	<div class="card-body">
+ 		<h5 class="card-title">Bookmark</h5>
+
+		<h6 class="card-subtitle mb-2 text-muted">Type: {{bookmark.bookmark_type}}</h6>
+ 		<p class="card-text">{{bookmark.name}}</p>
+ 		<a href="{{bookmark.url}}" class="card-link">{{bookmark.url}}</a>
+ 	</div>
+ </div>
+ {% endfor %}
 </div>
+
 {% endblock %}

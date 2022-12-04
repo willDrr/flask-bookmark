@@ -29,6 +29,12 @@ class User(db.Model):
 
 
 @dataclass
+class Bookmark:
+    name: str
+    url: str
+
+
+@dataclass
 class Directories:
     """
     creates a directory object with the next attributes...
@@ -36,5 +42,6 @@ class Directories:
     name: str
     url: str
     content: str
+    bookmark_type: str
     have_direct_directories: bool
     have_direct_links: bool

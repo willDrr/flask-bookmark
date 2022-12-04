@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import render_template, session, redirect, url_for, jsonify, make_response
+from flask import render_template, session, redirect, url_for, jsonify, make_response, request
 from . import main
 from .forms import NameForm
 from .. import db
@@ -7,6 +7,10 @@ from ..models import User
 
 from ..bookmark_controller import BookMarkProcessor
 
+from flask_paginate import Pagination, get_page_parameter
+
+
+FILE_BOOKMARK = "C:\\Users\\PERSONAL\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Bookmarks"
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -22,7 +26,18 @@ def index():
 
 @main.route('/bookmarks', methods=['GET', 'POST'])
 def bookmarks():
-    file_bookmark = "c:\\users\\personal\\desktop\\python-bookmark\\app\\" \
-       "static\\Bookmarks.json"
-    lista = BookMarkProcessor(file_bookmark).process_list_of_childrens()
-    return render_template('bookmarks.html', file_data=lista)
+    # TODO:: check symlinked file not updating
+    # file_bookmark = "c:\\users\\personal\\desktop\\python-bookmark\\app\\" \
+    #   "static\\Bookmarks.json"
+
+    bookmarks = BookMarkProcessor(FILE_BOOKMARK).process_list_of_childrens()
+
+    return render_template('bookmarks.html', bookmarks=bookmarks)
+
+
+@main.route('/links', methods=["GET", "POST"])
+def links():
+    bookmark = BookMarkProcessor(FILE_BOOKMARK)
+    bookmarks = bookmark.get_json_data()
+    links = bookmark.get_names(bookmarks)
+    return render_template('links.html', links=links)

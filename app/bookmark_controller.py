@@ -1,6 +1,7 @@
 import json
 
 from .models import Directories
+from .models import Bookmark 
 
 
 class BookMarkProcessor:
@@ -12,6 +13,7 @@ class BookMarkProcessor:
         \\Default'
         """
         self.file_bookmark = file_bookmark
+        self.allowed_objects = {"type": "url", "type": "folder"}
 
     def get_json_data(self):
         """
@@ -22,6 +24,21 @@ class BookMarkProcessor:
 
         return data["roots"]["bookmark_bar"]["children"]
 
+    # TODO:: make a generic class for this
+    def get_names(self, json_array):
+        bookmarks: Bookmark = []
+        for obj in json_array:
+            if isinstance(obj, dict):
+                bookmark = Bookmark(obj.get('name'), obj.get('url'))
+                bookmarks.append(bookmark)
+                # names.append(obj.get('name'))
+                children = obj.get('children', None)
+                if children:
+                    bookmarks.extend(self.get_names(children))
+            elif isinstance(obj, list):
+                bookmarks.extend(self.get_names(obj))
+        return bookmarks
+
     def process_list_of_childrens(self) -> Directories:
         """
         Process the granchildrens of json object. Since bookmakrs are saved
@@ -30,28 +47,11 @@ class BookMarkProcessor:
         only children
         """
         list_of_childrens = self.get_json_data()
-        lista: Directories = []
+        directories: Directories = []
         for children in list_of_childrens:
-            # top leve if: check if bookmark is dir or plain url
-            if 'children' in children:
-                for children_ in children["children"]:
-                    name = children["name"]
-                    content = ""
-                    url = ""
-                    dirs = True
-                    links = True
-                    if "children" in children_:
-                        content = str(children_["children"])
-                    else:
-                        content = str(children_)
-
-                    lista.append(Directories(name, url, content, dirs, links))
+            if children["type"] == "url":
+                directories.append(Directories(children["name"], children["url"], "", children["type"], True, True))
             else:
-                name = children["name"]
-                content = str(children)
-                url = ""
-                dirs = False
-                links = True
-                lista.append(Directories(name, url, content, dirs, links))
+                directories.append(Directories(children["name"], "", "", children["type"], True, True))
 
-        return lista
+        return directories
