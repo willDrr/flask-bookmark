@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="">
+	<h1>Bookmark names</h1>
+	{% for link in links %}
+	 <div class="card" style="margin: 10px">
+	 <div>
+		<span class="placeholder col-12"></span>
+		<span class="placeholder col-12 bg-primary"></span>
+		<span class="placeholder col-12 bg-secondary"></span>
+		<span class="placeholder col-12 bg-success"></span>
+		<span class="placeholder col-12 bg-danger"></span>
+		<span class="placeholder col-12 bg-warning"></span>
+		<span class="placeholder col-12 bg-info"></span>
+		<span class="placeholder col-12 bg-light"></span>
+		<span class="placeholder col-12 bg-dark"></span>
+	 </div>
+   <div class="card-body">
+	 	<h5 class="card-title">{{link.name}}</h5>
+	 	<p class="card-text">Card content...</p>
+	 	<a target="_blank" href="{{link.url}}" class="btn btn-primary">Go to website</a>
+   </div>
+	 </div>
+	{% endfor %}
+</div>
+
+{% endblock %}
+
