@@ -20,6 +20,4 @@ def create_app(config_name):
    
     app.register_blueprint(main_blueprint)
 
-    app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
-
     return app
